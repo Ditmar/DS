@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Modelado con Dinámica de Sistemas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="css/tangle.css">
+    <link rel="stylesheet" href="js/TangleKit/TangleKit.css">
+
+    <style>
+        #plot-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Modelado con Dinámica de Sistemas</h1>
+                <p>Autor: Msc Ing. Ditmar David Castro Angulo</p>
+            </section>
+            <section>
+                <img src="images/init.png">
+            </section>
+            <section>
+                <h2>Contenido</h2>
+                <ul>
+                    <li>¿Qué es la Dinámica de Sistemas?</li>
+                    <li>Arquetipos Sistémicos</li>
+                    <li>Símil Hidrodinámico</li>
+                    <li>Diagramas de Forrester</li>
+                    <li>Fases del Modelado</li>
+                    <li>Ejemplo clásico: Lotka-Volterra</li>
+                </ul>
+            </section>
+
+            <section>
+                <h1>¿Qué es la Dinámica de Sistemas?</h1>
+            </section>
+
+            <section>
+                <p>
+                    dv/dt = g = 9.81 m/s²<br>
+                    dy/dt = v = 0 m/s<br>
+                </p>
+            </section>
+
+            <section id="simulacion-caida">
+                <h5>¿Qué es la Dinámica de Sistemas?</h5>
+                <iframe id="iframeSimulacion" src="/examples/engines/model1.html" width="100%" height="600px"
+                    frameborder="0"></iframe>
+            </section>
+
+            <section>
+                <h5>¿Qué es la Dinámica de Sistemas?</h5>
+                <iframe id="iframeSimulacion2" src="/examples/engines/model2.html" width="100%" height="600px"
+                    frameborder="0"></iframe>
+            </section>
+
+            <section>
+                <h1>Arquetipos Sistémicos</h1>
+            </section>
+
+            <section>
+                <section>
+                    <div>
+                        <h2>Modelo de Crecimiento</h2>
+                        <p>\[ \frac{dp}{dt} = r \cdot p \]</p>
+                    </div>
+                </section>
+                <section>
+                    <h2>Modelo de Crecimiento</h2>
+                    <img src="/images/positive.png" />
+                </section>
+
+                <section>
+                    <h2>Solución analítica</h2>
+                    <p>Separando variables:</p>
+                    <p>\[ \frac{1}{p} \, dp = r \, dt \]</p>
+                </section>
+
+                <section>
+                    <h2>Integrando ambos lados</h2>
+                    <p>\[
+                        \int_{p(0)}^{p(t)} \frac{1}{p} \, dp = \int_{0}^{t} r \, dt
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Resultado de la integración</h2>
+                    <p>\[
+                        \ln(p(t)) - \ln(p(0)) = r \cdot t
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Aplicando propiedades logarítmicas</h2>
+                    <p>\[
+                        \ln\left(\frac{p(t)}{p(0)}\right) = r \cdot t
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Solución general</h2>
+                    <p>\[
+                        p(t) = p(0) \cdot e^{rt}
+                        \]</p>
+                </section>
+                <section>
+                    <h5>¿Crecimiento Positivo?</h5>
+                    <p>\[
+                        p(t) = p(0) \cdot e^{rt}
+                        \]</p>
+                    <iframe id="iframeSimulacion2" src="/examples/engines/model3.html" width="100%" height="600px"
+                        frameborder="0"></iframe>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Modelo de Crecimiento Negativo</h2>
+                    <p>\[ \frac{dx}{dt} = (x_d - x) \cdot k \]</p>
+                </section>
+                <section>
+                    <h2>Modelo de Crecimiento</h2>
+                    <img src="/images/negative.png" />
+                </section>
+                <section>
+                    <h2>Solución analítica</h2>
+                    <p>Separando variables:</p>
+                    <p>\[
+                        \frac{1}{x_d - x} \, dx = k \, dt
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Integrando ambos lados</h2>
+                    <p>\[
+                        \int_{x(0)}^{x(t)} \frac{1}{x_d - x} \, dx = \int_{0}^{t} k \, dt
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Cambio de variable en la integral</h2>
+                    <p>\[
+                        -\int_{x(0)}^{x(t)} \frac{1}{x - x_d} \, dx = \int_{0}^{t} k \, dt
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Resultado de la integración</h2>
+                    <p>\[
+                        -\ln\left|x(t) - x_d\right| + \ln\left|x(0) - x_d\right| = k \cdot t
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Aplicando propiedades logarítmicas</h2>
+                    <p>\[
+                        \ln\left( \frac{x(0) - x_d}{x(t) - x_d} \right) = k \cdot t
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Despejando la solución</h2>
+                    <p>\[
+                        \frac{x(0) - x_d}{x(t) - x_d} = e^{kt}
+                        \]</p>
+                    <p>\[
+                        x(t) = x_d + (x(0) - x_d) \cdot e^{-kt}
+                        \]</p>
+                </section>
+                <section>
+                    <h5>¿Crecimiento Positivo?</h5>
+                    <p>\[
+                        x(t) = x_d + (x(0) - x_d) \cdot e^{-kt}
+                        \]</p>
+                    <iframe id="iframeSimulacion2" src="/examples/engines/model4.html" width="100%" height="600px"
+                        frameborder="0"></iframe>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Discretización del Modelo</h1>
+                    <p>Partimos del modelo continuo:</p>
+                    <p>\[
+                        \frac{dx}{dt} = k \cdot (x_d - x)
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Diferencias finitas hacia atrás</h2>
+                    <p>Reemplazamos la derivada por una aproximación:</p>
+                    <p>\[
+                        \frac{x(t) - x(t - 1)}{\Delta t} = k \cdot (x_d - x(t - 1))
+                        \]</p>
+                </section>
+
+                <section>
+                    <h2>Despejando \( x(t) \)</h2>
+                    <p>\[
+                        x(t) = x(t - 1) + \Delta t \cdot k \cdot (x_d - x(t - 1))
+                        \]</p>
+                </section>
+            </section>
+            <section>
+                <h2>Modelo</h2>
+                <iframe src="http://localhost:4321/" width="100%" height="600px" frameborder="0"></iframe>
+            </section>
+            <section>
+                <section>
+                    <h1>El simil Hidrodinamico</h1>
+                    <p>El simil hidrodinamico es una herramienta que permite representar el comportamiento de un sistema
+                        dinámico
+                        a
+                        través de un modelo físico que simula el flujo de un fluido.</p>
+                </section>
+                <section>
+                    <h2>Simil</h2>
+                    <img src="images//simil.png" alt="Simil Hidrodinamico">
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Diagramas de Forrester</h1>
+                    <p>Los diagramas de Forrester son una herramienta gráfica utilizada para representar la estructura y
+                        el
+                        comportamiento de un sistema dinámico.</p>
+                </section>
+                <section>
+                    <h3>Niveles (Stocks)</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Niveles</td>
+                            <td>Representan la acumulación de recursos dentro del sistema, como población, dinero o
+                                inventario.</td>
+                            <td><strong>[Rectángulo]</strong></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Flujos (Flows)</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Flujos</td>
+                            <td>Representan el movimiento de recursos hacia o desde los niveles. Se muestran como
+                                flechas con una
+                                válvula.</td>
+                            <td><strong>→⚫→</strong></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Fuentes y Sumideros</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Fuentes y Sumideros</td>
+                            <td>Entradas o salidas externas al sistema. No se modelan internamente pero influyen.</td>
+                            <td><strong>☁️</strong> (nube)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Variables Auxiliares</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Variables Auxiliares</td>
+                            <td>Ayudan a definir relaciones y simplifican ecuaciones. Son intermedias.</td>
+                            <td><strong>○</strong> (círculo)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Conectores de Influencia</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Conectores de Influencia</td>
+                            <td>Indican que una variable afecta a otra. Se muestran como flechas simples.</td>
+                            <td><strong>--------→</strong></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Lazos de Retroalimentación</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Lazos de Retroalimentación</td>
+                            <td>Ciclos de influencia. Pueden ser positivos (refuerzo) o negativos (balance).</td>
+                            <td><strong>↺ + / ↺ −</strong></td>
+                        </tr>
+                    </table>
+                </section>
+
+            </section>
+            <section>
+                <h2>
+                    Fases del modelado
+                </h2>
+                <img src="images/modelado.png" alt="Fases del modelado">
+            </section>
+        </div>
+    </div>
+
+    <!-- Reveal.js -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
+    <script>
+        Reveal.initialize();
+        Reveal.on('slidechanged', function (event) {
+            const simulacion1 = document.getElementById('iframeSimulacion');
+            const simulacion2 = document.getElementById('iframeSimulacion2');
+
+            if (event.currentSlide.id === 'simulacion-caida') {
+                simulacion1.contentWindow.postMessage("startSimulation", "*");
+            }
+
+            if (event.currentSlide === simulacion2?.parentNode) {
+                simulacion2.contentWindow.postMessage("startSimulation", "*");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
