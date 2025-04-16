@@ -178,7 +178,7 @@
                         \]</p>
                 </section>
                 <section>
-                    <h5>¿Crecimiento Positivo?</h5>
+                    <h5>Crecimiento Negativo</h5>
                     <p>\[
                         x(t) = x_d + (x(0) - x_d) \cdot e^{-kt}
                         \]</p>
@@ -246,7 +246,7 @@
                             <td>Niveles</td>
                             <td>Representan la acumulación de recursos dentro del sistema, como población, dinero o
                                 inventario.</td>
-                            <td><strong>[Rectángulo]</strong></td>
+                            <td><img src="/images/stock.png" /></td>
                         </tr>
                     </table>
                 </section>
@@ -264,7 +264,7 @@
                             <td>Representan el movimiento de recursos hacia o desde los niveles. Se muestran como
                                 flechas con una
                                 válvula.</td>
-                            <td><strong>→⚫→</strong></td>
+                            <td><img src="/images/flow.png" /></td>
                         </tr>
                     </table>
                 </section>
@@ -312,11 +312,26 @@
                         <tr>
                             <td>Conectores de Influencia</td>
                             <td>Indican que una variable afecta a otra. Se muestran como flechas simples.</td>
-                            <td><strong>--------→</strong></td>
+                            <td><img src="/images/causalarrow.png" /></td>
                         </tr>
                     </table>
                 </section>
-
+                <section>
+                    <h3>Retrasos</h3>
+                    <table border="1" cellpadding="8">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Representación Gráfica</th>
+                        </tr>
+                        <tr>
+                            <td>Retrasos</td>
+                            <td>Ocurren cuando la información que influye en una decisión no está disponible de
+                                inmediato.</td>
+                            <td><img src="/images/delay.png" /></td>
+                        </tr>
+                    </table>
+                </section>
                 <section>
                     <h3>Lazos de Retroalimentación</h3>
                     <table border="1" cellpadding="8">
@@ -338,8 +353,117 @@
                 <h2>
                     Fases del modelado
                 </h2>
-                <img src="images/modelado.png" alt="Fases del modelado">
+                <img src="images/fases.png" alt="Fases del modelado">
             </section>
+            <section>
+                <section>
+                    <h1>Reserva natural en desequilibrio</h1>
+                    <p>
+                        En una reserva natural, la población de venados (presas) ha disminuido debido al aumento de los
+                        pumas
+                        (depredadores). La administración del parque está preocupada porque los venados están por debajo
+                        de un nivel
+                        seguro para la regeneración de la flora. Se plantea una política de control de la población de
+                        pumas
+                        mediante
+                        caza moderada solo si los venados bajan de cierto umbral.
+                    </p>
+                </section>
+                <section>
+                    <h2>Modelo de Lotka-Volterra</h2>
+                    <p>Modelo clásico de interacción entre depredadores y presas.</p>
+                    <p>\[ \frac{dx}{dt} = \alpha x - \beta xy \]</p>
+                    <p>\[ \frac{dy}{dt} = \delta xy - \gamma y \]</p>
+                </section>
+                <section>
+                    <h2>Parámetros del modelo Lotka-Volterra</h2>
+                    <table style="margin: auto; border-collapse: collapse; font-size: 1.2em;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #ccc; padding: 0px;">Variable / Parámetro</th>
+                                <th style="border: 1px solid #ccc; padding: 0px;">Descripción</th>
+                                <th style="border: 1px solid #ccc; padding: 0px;">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">V<sub>0</sub></td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Población inicial de venados</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">200</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">P<sub>0</sub></td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Población inicial de pumas</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">40</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">a</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Tasa de reproducción de venados</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">0.08</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">b</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Tasa de depredación (eficiencia de
+                                    caza)</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">0.002</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">c</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Tasa de mortalidad natural de pumas
+                                </td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">0.04</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 0px;">d</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">Conversión de presas cazadas a nuevos
+                                    pumas</td>
+                                <td style="border: 1px solid #ccc; padding: 0px;">0.0004</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                <section>
+                    <h2>Diseño de una politica</h2>
+                    <p>Si V < V_umbral entonces Reducción de pumas adicional por caza=policy_intensity * P</p>
+                </section>
+                <section>
+                    <h2>¿Qué pasa si ponemos un límite al crecimiento?</h2>
+                    <p>
+                        \[ \frac{dP}{dt} = r P \left(1 - \frac{P}{K} \right) \]
+                    </p>
+                </section>
+
+                <!-- Diapositiva final: resumen y reflexión -->
+                <section>
+                    <section>
+                        <h2>Resumen</h2>
+                        <ul>
+                            <li>Comprendimos los fundamentos de la Dinámica de Sistemas.</li>
+                            <li>Exploramos modelos de crecimiento positivo y negativo.</li>
+                            <li>Estudiamos la discretización de modelos continuos.</li>
+                            <li>Analizamos los Diagramas de Forrester y sus componentes.</li>
+                            <li>Simulamos el modelo de Lotka-Volterra aplicado a un ecosistema real.</li>
+                        </ul>
+                    </section>
+
+                </section>
+            </section>
+            <section>
+                <h2>Reflexión final</h2>
+                <p>
+                    La Dinámica de Sistemas no solo nos permite modelar el comportamiento de sistemas complejos, sino
+                    que
+                    también
+                    promueve una visión integral y crítica para la toma de decisiones informadas y sostenibles.
+                </p>
+                <p>
+                    Como futuros ingenieros, es esencial desarrollar la capacidad de pensar en términos de sistemas,
+                    identificar la retroalimentación, los retrasos, y cómo las políticas afectan el comportamiento
+                    dinámico.
+                </p>
+            </section>
+            <section>
+                <img src="/images/bye.png" alt="Gracias por su atención">
         </div>
     </div>
 
