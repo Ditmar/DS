@@ -1,1 +1,7 @@
-/* Tangle styles */
+.model-content {
+    display: flex;
+    height: 400px;
+}
+.plot-container {
+    width: 100%;
+}

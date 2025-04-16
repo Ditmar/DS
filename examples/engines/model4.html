@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tangle dependencies -->
+    <script type="text/javascript" src="../../js/Tangle.js"></script>
+    <link rel="stylesheet" href="../../css/tangle.css">
+    <link rel="stylesheet" href="../../js/TangleKit/TangleKit.css">
+    <script src="../../js/TangleKit/mootools.js"></script>
+    <script src="../../js/TangleKit/sprintf.js"></script>
+    <script src="../../js/TangleKit/TangleKit.js"></script>
+    <script src="../../js/TangleKit/BVTouchable.js"></script>
+    <script src="../../libs/plotly.min.js"></script>
+    <title>Modelo de Ajuste Exponencial</title>
+</head>
+
+<body>
+    <div class="model-content">
+        <div class="tangle-content">
+            <p>
+                Valor deseado <strong>x<sub>d</sub></strong> =
+                <span data-var="xd" class="TKAdjustableNumber" data-min="0" data-max="500" data-step="10"></span>
+            </p>
+            <p>
+                Valor inicial <strong>x₀</strong> =
+                <span data-var="x0" class="TKAdjustableNumber" data-min="0" data-max="500" data-step="10"></span>
+            </p>
+            <p>
+                Tasa de ajuste <strong>k</strong> =
+                <span data-var="k" class="TKAdjustableNumber" data-min="0.01" data-max="1" data-step="0.01"></span>
+            </p>
+            <p>
+                Tiempo <strong>t</strong> =
+                <span data-var="t" class="TKAdjustableNumber" data-min="0" data-max="100" data-step="1"></span>
+            </p>
+            <p>
+                Resultado: <strong>x(t)</strong> =
+                <span data-var="xt" class="TKNumber" data-format="%.2f">0</span>
+            </p>
+        </div>
+        <div id="plot-container"></div>
+    </div>
+
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            init();
+        });
+
+        function drawGraph(x0, xd, k, finaltime) {
+            const time = [];
+            const values = [];
+            for (let t = 0; t <= finaltime; t++) {
+                time.push(t);
+                const xt = xd + (x0 - xd) * Math.exp(-k * t);
+                values.push(xt);
+            }
+
+            Plotly.newPlot('plot-container', [{
+                x: time,
+                y: values,
+                mode: 'lines',
+                line: { width: 3 }
+            }], {
+                margin: { t: 30 },
+                xaxis: { title: "Tiempo (t)" },
+                yaxis: { title: "x(t)" }
+            });
+        }
+
+        function init() {
+            let tangleContent = document.getElementsByClassName('tangle-content')[0];
+            if (tangleContent) {
+                new Tangle(tangleContent, {
+                    initialize: function () {
+                        this.xd = 300;
+                        this.x0 = 100;
+                        this.k = 0.1;
+                        this.t = 1;
+                    },
+                    update: function () {
+                        this.xt = this.xd + (this.x0 - this.xd) * Math.exp(-this.k * this.t);
+                        drawGraph(this.x0, this.xd, this.k, this.t);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

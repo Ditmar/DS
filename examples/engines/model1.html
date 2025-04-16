@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/konva@7.2.2/konva.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            font-family: sans-serif;
+        }
+
+        #output {
+            font-size: 120%;
+            padding: 0.5em;
+        }
+
+        #container {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #chart {
+            width: 400px;
+            height: 400px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="start()">Iniciar</button>
+    <div id="output"></div>
+    <div id="container"></div>
+    <div id="chart"></div>
+
+    <script>
+        const width = 500;
+        const height = 500;
+
+        const stage = new Konva.Stage({
+            container: 'container',
+            width,
+            height,
+        });
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        const floorHeight = 50;
+        const floor = new Konva.Rect({
+            x: 0,
+            y: height - floorHeight,
+            width: width,
+            height: floorHeight,
+            fill: '#444',
+        });
+        layer.add(floor);
+
+        const ballRadius = 20;
+        const ball = new Konva.Circle({
+            x: width / 2,
+            y: 50,
+            radius: ballRadius,
+            fill: 'orange',
+            stroke: 'black',
+            strokeWidth: 2,
+        });
+        layer.add(ball);
+
+        // Física
+        const g = 9.81;
+        const coeficiente = 0.8;
+        let v = 0;
+        let y = 50;
+        const dt = 0.05;
+        let t = 0;
+        let animationStarted = false;
+
+        // Datos para graficar
+        const timeData = [];
+        const velocityData = [];
+
+        function updateEquations() {
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                dv/dt = g = ${g.toFixed(2)} m/s²<br>
+                dy/dt = v = ${v.toFixed(2)} m/s<br>
+                        y = ${y.toFixed(2)} m<br>
+            `;
+        }
+
+
+        updateEquations();
+
+        const animation = new Konva.Animation(() => {
+            v += g * dt;
+            y += v * dt;
+            t += dt;
+
+            const yMax = height - floorHeight - ballRadius;
+
+            if (y >= yMax) {
+                y = yMax;
+                v = -v * coeficiente;
+                if (Math.abs(v) < 0.5) {
+                    v = 0;
+                }
+            }
+
+            // Actualizar datos para la gráfica
+            timeData.push(t.toFixed(2));
+            velocityData.push(v.toFixed(2));
+            if (timeData.length > 100) {
+                timeData.shift();
+                velocityData.shift();
+            }
+
+            updateEquations();
+            ball.y(y);
+        }, layer);
+
+        function start() {
+            if (!animationStarted) {
+                animation.start();
+                animationStarted = true;
+            }
+        }
+
+        window.addEventListener("message", function (event) {
+            if (event.data === "startSimulation") {
+                //start();
+            }
+        });
+    </script>
+</body>
+
+</html>
